@@ -63,8 +63,10 @@ public:
         FrameBuffer.clear();
         MessageOpcode = 0;
         MessageBufferLength = 0;
+		//ClientScore = {0,0};
     }
 
+	
     int socket;                            // client socket
     string MessageBuffer;                  // a blank string when there's no incoming frames
     int ReadyState;                        // between 0 and 3
@@ -81,11 +83,15 @@ public:
 
 class webSocket{
 public:
+	vector<int> ClientScore;
     webSocket(){
         callOnOpen = NULL;
         callOnClose = NULL;
         callOnMessage = NULL;
         callPeriodic = NULL;
+		ClientScore = vector<int>();
+		ClientScore.push_back(0);
+		ClientScore.push_back(0);
     }
 
     void setOpenHandler(defaultCallback callback);

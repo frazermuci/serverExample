@@ -13,13 +13,12 @@ webSocket server;
 void openHandler(int clientID){
     ostringstream os;
     os << "Stranger " << clientID << " has joined.";
-
     vector<int> clientIDs = server.getClientIDs();
     for (int i = 0; i < clientIDs.size(); i++){
         if (clientIDs[i] != clientID)
             server.wsSend(clientIDs[i], os.str());
     }
-    server.wsSend(clientID, "0");
+    server.wsSend(clientID, "0:0");
 }
 
 /* called when a client disconnects */
@@ -38,7 +37,7 @@ void closeHandler(int clientID){
 void messageHandler(int clientID, string message){
     ostringstream os;
     os << "Stranger " << clientID << " says: " << message;
-	cout << message;
+	//cout << message;
 
     vector<int> clientIDs = server.getClientIDs();
     for (int i = 0; i < clientIDs.size(); i++){
@@ -50,12 +49,23 @@ void messageHandler(int clientID, string message){
 	{
 		//server.wsSendClientClose(clientID);
 		server.wsClose(clientID);
+		server.ClientScore[0] = 0;
+		server.ClientScore[1] = 0;
 	}
 	else
-	{
-		int num= atoi(message.c_str());
+	{		
+		ostringstream give_string;
+		
+		int num1= atoi(message.c_str());//str_array[0].c_str());
+		int num2= !atoi(message.c_str());
+		int inc1,inc2;
+		inc1 = 100 * num1;
+		inc2 = 100 * num2;
 		ostringstream stream;
-		stream << num + 100;
+		server.ClientScore[0] = server.ClientScore[0]+ inc1;
+		server.ClientScore[1] = server.ClientScore[1]+ inc2;
+		stream << server.ClientScore[0] <<":"<< server.ClientScore[1];
+		//cout << "hello"<<inc1 << inc2 << endl;
 		server.wsSend(clientID, stream.str());
 	}
 }
@@ -81,9 +91,9 @@ void periodicHandler(){
 int main(int argc, char *argv[]){
     int port;
 
-    cout << "Please set server port: ";
-    cin >> port;
-
+    //cout << "Please set server port: ";
+    //cin >> port;
+	port = 21234;
     /* set event handler */
     server.setOpenHandler(openHandler);
     server.setCloseHandler(closeHandler);
