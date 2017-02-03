@@ -668,7 +668,6 @@ void webSocket::setPeriodicHandler(nullCallback callback){
 
 void webSocket::startServer(int port){
     showAvailableIP();
-
     int yes = 1;
     char buf[4096];
     struct sockaddr_in serv_addr, cli_addr;

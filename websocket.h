@@ -83,15 +83,16 @@ public:
 
 class webSocket{
 public:
-	vector<int> ClientScore;
+	map<int,int> ClientScore;
     webSocket(){
         callOnOpen = NULL;
         callOnClose = NULL;
         callOnMessage = NULL;
         callPeriodic = NULL;
-		ClientScore = vector<int>();
-		ClientScore.push_back(0);
-		ClientScore.push_back(0);
+		ClientScore = map<int,int>();
+		///hard coded////////
+		//ClientScore.insert(pair<int,int>(0,0));
+		//ClientScore.insert(pair<int,int>(1,0));
 		check = 1;
     }
 

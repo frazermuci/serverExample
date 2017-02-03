@@ -6,6 +6,7 @@ var connection = new WebSocket('ws://127.0.0.1:21234', ['soap', 'xmpp']);
 };*/
 
 // Log errors
+count = 1;
 connection.onerror = function (error) {
   console.log('WebSocket Error ' + error);
 };
@@ -14,8 +15,15 @@ connection.onerror = function (error) {
 connection.onmessage = function (e) {
   console.log('Server Score: ' + e.data);
   var array = e.data.split(":");
+  if(count)
+  {
+	  //assumes client 0 based ids
+	  connection.send("init:"+0+":"+1);
+  }
+  console.log(e.data)
   document.getElementById("ButtonPress").value = array[0];
   document.getElementById("ButtonPress2").value = array[1];
+  count =0;
 };
 
 
