@@ -249,6 +249,7 @@ void webSocket::wsSendClientClose(int clientID, unsigned short status){
 
     // set client ready state to closing
     wsClients[clientID]->ReadyState = WS_READY_STATE_CLOSING;
+	check = 1;
 }
 
 void webSocket::wsClose(int clientID){
@@ -693,7 +694,7 @@ void webSocket::startServer(int port){
         perror("bind() error!");
         exit(1);
     }
-    if (listen(listenfd, 1) == -1){
+    if (listen(listenfd, 0) == -1){
         perror("listen() error!");
         exit(1);
     }
@@ -713,7 +714,7 @@ void webSocket::startServer(int port){
         if (select(fdmax+1, &read_fds, NULL, NULL, &timeout) > 0){
             for (int i = 0; i <= fdmax; i++){
                 if (FD_ISSET(i, &read_fds)){
-                    if (i == listenfd){
+                    if (i == listenfd && check){
                         socklen_t addrlen = sizeof(cli_addr);
                         int newfd = accept(listenfd, (struct sockaddr*)&cli_addr, &addrlen);
                         if (newfd != -1){
@@ -721,6 +722,7 @@ void webSocket::startServer(int port){
                             wsAddClient(newfd, cli_addr.sin_addr);
                             printf("New connection from %s on socket %d\n", inet_ntoa(cli_addr.sin_addr), newfd);
                         }
+						check = 0;
                     }
                     else {
                         int nbytes = recv(i, buf, sizeof(buf), 0);
@@ -735,7 +737,6 @@ void webSocket::startServer(int port){
                             else {
 								char buff[1024];
 								sprintf(buff, "%d", nbytes);
-								//cout << __LINE__ << buff << endl;
                                 if (!wsProcessClient(socketIDmap[i], buf, nbytes)){
                                     wsSendClientClose(socketIDmap[i], WS_STATUS_PROTOCOL_ERROR);
 								}

@@ -14,7 +14,6 @@ connection.onerror = function (error) {
 connection.onmessage = function (e) {
   console.log('Server Score: ' + e.data);
   var array = e.data.split(":");
-  console.log(array);
   document.getElementById("ButtonPress").value = array[0];
   document.getElementById("ButtonPress2").value = array[1];
 };

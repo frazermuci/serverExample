@@ -92,8 +92,10 @@ public:
 		ClientScore = vector<int>();
 		ClientScore.push_back(0);
 		ClientScore.push_back(0);
+		check = 1;
     }
 
+	int check;
     void setOpenHandler(defaultCallback callback);
     void setCloseHandler(defaultCallback callback);
     void setMessageHandler(messageCallback callback);
