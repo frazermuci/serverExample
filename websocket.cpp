@@ -38,7 +38,7 @@ void showAvailableIP(){
         cout << "Error on getting available IP!" << endl;
     }
 
-    cout << "Available IP:" << endl;
+    cout << "Please type in 127.0.0.1" << endl;
 
     struct in_addr addr;
     for (struct ifaddrs *p = iflist; p; p = p->ifa_next){

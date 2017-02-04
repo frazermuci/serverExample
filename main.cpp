@@ -78,6 +78,7 @@ void messageHandler(int clientID, string message){
 			id << message[i];
 			if(strcmp(id.str().c_str(),"init") != 0)
 			{
+				//stores given ids in map id associated with score
 				server.ClientScore.insert(pair<int,int>(atoi(id.str().c_str()),0));
 				id.str("");
 			}
@@ -105,6 +106,11 @@ void messageHandler(int clientID, string message){
 			stream << server.ClientScore[i];
 		}
 		server.wsSend(clientID, stream.str());
+		cout << "ids:" << endl;
+		for(int i =  0; i < server.ClientScore.size(); i++)
+		{
+			cout << "id: " << i << "  "<<"score: "<< server.ClientScore[i]<<endl; 
+		}
 	}
 }
 
